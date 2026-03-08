@@ -30,6 +30,11 @@ async def start(_, message):
 @app.on_message(filters.command("info"))
 async def info(_, message):
 
+    # OWNER CHECK
+    if message.from_user.id not in OWNER_IDS:
+        await message.reply_text("❌ Unauthorized")
+        return
+
     parts = message.text.split(maxsplit=1)
 
     if len(parts) < 2:
@@ -42,7 +47,7 @@ async def info(_, message):
 
     results = []
 
-    # Search database
+    # Search ClickHouse database
     results.extend(search_database(query))
 
     # Search CSV dataset
